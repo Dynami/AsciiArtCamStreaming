@@ -1,9 +1,9 @@
 import processing.video.*;
 
-//final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
-final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
+final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
+//final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
 final char[] letters = letterOrders.toCharArray();
-final int SIZE = 10;
+final int SIZE = 6;
 final float BRIGHTNESS_FILTER = 190;
 
 int cols, rows;
@@ -44,14 +44,14 @@ void setup(){
   //video = new Capture(this, width, height);
   //video.start();
   noStroke();
-  rows = int(height/SIZE);
-  cols = int(width/SIZE);
+  rows = int(video.height/SIZE);
+  cols = int(video.width/SIZE);
   //print(height+" | "+width);
   
   row_factor = float(height) / video.height;
   col_factor = float(width) / video.width;
   
-  PFont font = createFont("Courier New", SIZE); //<>//
+  PFont font = createFont("Courier New", int(SIZE*row_factor)); //<>//
   textFont(font);
 }
 
