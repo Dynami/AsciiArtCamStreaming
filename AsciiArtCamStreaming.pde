@@ -1,19 +1,20 @@
 import processing.video.*;
 
-final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'.                       ";
+//final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
+final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
 final char[] letters = letterOrders.toCharArray();
-final int SIZE = 9;
-final float BRIGHTNESS_FILTER = 180;
+final int SIZE = 10;
+final float BRIGHTNESS_FILTER = 190;
 
 int cols, rows;
+float row_factor, col_factor;
 Capture video;
-
 
 void setup(){
   //fullScreen();
-  println(letters.length); 
- 
-  size(640, 480);
+  //size(680, 480);
+  size(1020, 780);
+  
   String[] cameras = Capture.list();
   
   if (cameras.length == 0) {
@@ -28,7 +29,7 @@ void setup(){
     // The camera can be initialized directly using an 
     // element from the array returned by list():
     try{
-      video = new Capture(this, width, height);
+      video = new Capture(this, "pipeline:autovideosrc"); // new Capture(this, width, height, 0);
       println("Initialized");
       video.start();
       println("Started");
@@ -43,13 +44,16 @@ void setup(){
   //video = new Capture(this, width, height);
   //video.start();
   noStroke();
-  cols = width/SIZE;
-  rows = height/SIZE;
+  rows = int(height/SIZE);
+  cols = int(width/SIZE);
+  //print(height+" | "+width);
   
-  PFont font = createFont("Courier New", SIZE);
+  row_factor = float(height) / video.height;
+  col_factor = float(width) / video.width;
+  
+  PFont font = createFont("Courier New", SIZE); //<>//
   textFont(font);
 }
-
 
 
 void draw(){ 
@@ -60,24 +64,25 @@ void draw(){
   //set(0, 0, video);
   for(int r = 0; r < rows; r++){
     for(int c = 0; c < cols; c++){
-      
-      color pixel = video.pixels[r*SIZE*video.width + c*SIZE];
+      int max_video_idx = video.width*video.height - 1;
+      int video_idx = Math.min((r*SIZE*video.width + c*SIZE), max_video_idx);
+      color pixel = video.pixels[video_idx];
       float brightness = brightness(pixel);
       int idx = letters.length-1;
       
       if(brightness < BRIGHTNESS_FILTER){
-        idx = int(map(brightness, 255, 0, letters.length-1, 0));
+        idx = int(map(brightness, BRIGHTNESS_FILTER, 0, letters.length-1, 0));
       }
       
       fill(pixel);
-      text(letters[idx], c*SIZE, r*SIZE);
+      text(letters[idx], int(c*SIZE*col_factor), int(r*SIZE*row_factor));
     }
   }
 }
 
 void keyPressed(){
   if(key == ENTER){
-    saveFrame("CoderDojoAscii-#####.png");
+    saveFrame("AsciiArtCam-#####.png");
   }
 }
 
