@@ -2,7 +2,7 @@ import processing.video.*;
 
 final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
 //final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
-final char[] letters = letterOrders.toCharArray();
+final char[] LETTERS = letterOrders.toCharArray();
 final int SIZE = 6;
 final float BRIGHTNESS_FILTER = 190;
 
@@ -32,23 +32,23 @@ void setup(){
       println("Initialized");
       video.start();
       println("Started");
+      noStroke();
+      rows = int(video.height/SIZE);
+      cols = int(video.width/SIZE);
+      //print(height+" | "+width);
+      
+      row_factor = float(height) / video.height;
+      col_factor = float(width) / video.width;
+      
+      PFont font = createFont("Courier New", int(SIZE*row_factor));
+      textFont(font);
+      
     } catch(Exception ex){
       println("Error: "+ex.getMessage());
       stop();
       exit();
     }
-  } 
-  
-  noStroke();
-  rows = int(video.height/SIZE);
-  cols = int(video.width/SIZE);
-  //print(height+" | "+width);
-  
-  row_factor = float(height) / video.height;
-  col_factor = float(width) / video.width;
-  
-  PFont font = createFont("Courier New", int(SIZE*row_factor)); //<>//
-  textFont(font);
+  } //<>//
 }
 
 
@@ -64,14 +64,14 @@ void draw(){
       int video_idx = Math.min((r*SIZE*video.width + c*SIZE), max_video_idx);
       color pixel = video.pixels[video_idx];
       float brightness = brightness(pixel);
-      int idx = letters.length-1;
+      int idx = LETTERS.length-1;
       
       if(brightness < BRIGHTNESS_FILTER){
-        idx = int(map(brightness, BRIGHTNESS_FILTER, 0, letters.length-1, 0));
+        idx = int(map(brightness, BRIGHTNESS_FILTER, 0, LETTERS.length-1, 0));
       }
       
       fill(pixel);
-      text(letters[idx], int(c*SIZE*col_factor), int(r*SIZE*row_factor));
+      text(LETTERS[idx], int(c*SIZE*col_factor), int(r*SIZE*row_factor));
     }
   }
 }
