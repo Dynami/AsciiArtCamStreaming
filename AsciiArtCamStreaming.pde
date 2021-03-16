@@ -1,4 +1,5 @@
 import processing.video.*;
+import java.util.function.Consumer;
 
 final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
 //final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
@@ -9,6 +10,7 @@ final float BRIGHTNESS_FILTER = 190;
 int cols, rows;
 float row_factor, col_factor;
 Capture video;
+
 
 void setup(){
   //fullScreen();
@@ -71,7 +73,7 @@ void draw(){
       }
       
       fill(pixel);
-      text(LETTERS[idx], int(c*SIZE*col_factor), int(r*SIZE*row_factor));
+      text(LETTERS[idx], width - int(c*SIZE*col_factor), int(r*SIZE*row_factor));
     }
   }
 }
