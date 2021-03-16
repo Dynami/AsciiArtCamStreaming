@@ -12,7 +12,6 @@ Capture video;
 
 void setup(){
   //fullScreen();
-  //size(680, 480);
   size(1020, 780);
   
   String[] cameras = Capture.list();
@@ -40,9 +39,6 @@ void setup(){
     }
   } 
   
-  
-  //video = new Capture(this, width, height);
-  //video.start();
   noStroke();
   rows = int(video.height/SIZE);
   cols = int(video.width/SIZE);
