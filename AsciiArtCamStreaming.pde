@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
 //final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
 final char[] LETTERS = letterOrders.toCharArray();
-final int SIZE = 6;
+final int SIZE = 4;
 final float BRIGHTNESS_FILTER = 190;
 
 int cols, rows;
@@ -50,7 +50,24 @@ void setup(){
       stop();
       exit();
     }
-  } //<>//
+  }
+}
+
+float getAvgBrigtness(Capture video, int r, int c, int size, int radius){
+  final int max_video_idx = video.width*video.height - 1;
+  final int video_idx = Math.min((r*size*video.width + c*size), max_video_idx);
+  int offset = Math.max(0, video_idx-int(radius/2.0)-video.width*int(radius/2.0));
+  //print(offset);
+  float bright = 0.0;
+  int idx = 0;
+  for(int col = 0; col < radius; col++){
+    for(int row = 0; row < radius; row++){
+      idx = Math.min(offset+col+video.width*row, max_video_idx);
+      color pixel = video.pixels[idx];
+      bright += brightness(pixel);
+    }
+  }
+  return bright/(radius*radius);
 }
 
 
@@ -59,13 +76,16 @@ void draw(){
   
   video.read();
   background(255);
-  //set(0, 0, video);
+  
   for(int r = 0; r < rows; r++){
     for(int c = 0; c < cols; c++){
       int max_video_idx = video.width*video.height - 1;
       int video_idx = Math.min((r*SIZE*video.width + c*SIZE), max_video_idx);
+      
       color pixel = video.pixels[video_idx];
+      
       float brightness = brightness(pixel);
+      //float brightness = getAvgBrigtness(video, r, c, SIZE, SIZE);
       int idx = LETTERS.length-1;
       
       if(brightness < BRIGHTNESS_FILTER){
@@ -73,6 +93,7 @@ void draw(){
       }
       
       fill(pixel);
+      //fill(0);
       text(LETTERS[idx], width - int(c*SIZE*col_factor), int(r*SIZE*row_factor));
     }
   }
@@ -88,5 +109,6 @@ void stop() {
   println("Stopping video");
   if(video != null && video.isCapturing()){
     video.stop();
+    video.dispose();
   }
 } 
