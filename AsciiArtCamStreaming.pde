@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
 //final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
 final char[] LETTERS = letterOrders.toCharArray();
-final int SIZE = 8;
+final int SIZE = 6;
 final float BRIGHTNESS_FILTER = 190;
 
 int cols, rows;
@@ -92,8 +92,8 @@ void draw(){
         idx = int(map(brightness, BRIGHTNESS_FILTER, 0, LETTERS.length-1, 0));
       }
       
-      fill(pixel);
-      //fill(0);
+      //fill(pixel);
+      fill(0);
       text(LETTERS[idx], width - int(c*SIZE*col_factor), int(r*SIZE*row_factor));
     }
   }
