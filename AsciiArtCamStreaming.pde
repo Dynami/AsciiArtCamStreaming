@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 final String letterOrders = "$@B%8&WM#ZO0QLCJUYXzcvuxrft/\\|()1{}[]?-_+~<>i!;:,\"^`\'. ";
 //final String letterOrders = "@B%8W#Z0LCJYXzx\\|(1{]?~>i:,\"^`\'.  ";
 final char[] LETTERS = letterOrders.toCharArray();
-final int SIZE = 4;
+final int SIZE = 8;
 final float BRIGHTNESS_FILTER = 190;
 
 int cols, rows;
@@ -84,8 +84,8 @@ void draw(){
       
       color pixel = video.pixels[video_idx];
       
-      float brightness = brightness(pixel);
-      //float brightness = getAvgBrigtness(video, r, c, SIZE, SIZE);
+      //float brightness = brightness(pixel);
+      float brightness = getAvgBrigtness(video, r, c, SIZE, SIZE);
       int idx = LETTERS.length-1;
       
       if(brightness < BRIGHTNESS_FILTER){
